@@ -1,3 +1,4 @@
+`timescale 100ps/1ps
 module fifo_tb;
 
 reg reset_n;
@@ -21,16 +22,18 @@ simple_fifo dut (
 
 initial begin
   clk = 1'b0;
-  reset_n = 1'b1;
-  repeat(4) #10 clk = ~clk;
   reset_n = 1'b0;
+  repeat(4) #10 clk = ~clk;
+  reset_n = 1'b1;
   forever #10 clk = ~clk; // generate a clock
 end
 
 reg [15:0] tmp;
 initial begin
   data_in = 16'h0; // initial value
-  @(negedge reset_n); // wait for reset
+  fifo_push = 1'b0;
+  fifo_pop = 1'b0;
+  @(posedge reset_n); // wait for reset
   data_in = 16'hffff;
   repeat (8) begin
     @(posedge clk);

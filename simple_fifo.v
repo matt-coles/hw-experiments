@@ -1,3 +1,4 @@
+`timescale 100ps/1ps
 /*
 * DEPTH must be a power of 2
 */
@@ -22,7 +23,7 @@ reg [$clog2(DEPTH)-1:0] wr_ptr;
 reg [WIDTH-1:0] data [DEPTH-1:0];
 
 always @(posedge clk) begin
-  if (reset_n) begin
+  if (~reset_n) begin
     rd_ptr <= 0;
     wr_ptr <= 0;
     full <= 0;
@@ -34,10 +35,8 @@ always @(posedge clk) begin
       wr_ptr = wr_ptr + 1;
       if (wr_ptr == rd_ptr) begin
         full <= 1'b1;
-        empty <= 1'b0;
       end
       else begin
-        full <= 1'b0;
         empty <= 1'b0;
       end
     end
@@ -45,12 +44,10 @@ always @(posedge clk) begin
       data_out <= data[rd_ptr];
       rd_ptr = rd_ptr + 1;
       if (wr_ptr == rd_ptr) begin
-        full <= 1'b0;
         empty <= 1'b1;
       end
       else begin
         full <= 1'b0;
-        empty <= 1'b0;
       end
     end
   end

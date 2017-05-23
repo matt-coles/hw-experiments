@@ -1,2 +1,0 @@
-mkdir -p out
-iverilog -o out/sim simple_fifo.v fifo_tb.v
