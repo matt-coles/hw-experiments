@@ -33,22 +33,14 @@ always @(posedge clk) begin
     if (push & ~full) begin
       data[wr_ptr] <= data_in;
       wr_ptr = wr_ptr + 1;
-      if (wr_ptr == rd_ptr) begin
-        full <= 1'b1;
-      end
-      else begin
-        empty <= 1'b0;
-      end
+      if (wr_ptr == rd_ptr) full <= 1'b1;
+      else empty <= 1'b0;
     end
     if (pop & ~empty) begin
       data_out <= data[rd_ptr];
       rd_ptr = rd_ptr + 1;
-      if (wr_ptr == rd_ptr) begin
-        empty <= 1'b1;
-      end
-      else begin
-        full <= 1'b0;
-      end
+      if (wr_ptr == rd_ptr) empty <= 1'b1;
+      else full <= 1'b0;
     end
   end
 end
